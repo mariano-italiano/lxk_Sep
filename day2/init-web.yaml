@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-web
+spec:
+  initContainers:
+  - name: svc-check
+    image: nicolaka/netshoot
+    command: ['sh','-c','until nslookup init-web-svc ; do echo "waiting for service init-web-svc"; sleep 10 ; done',] 
+  containers:
+  - name: web1
+    image: httpd

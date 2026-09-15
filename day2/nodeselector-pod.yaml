@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodeselector-pod
+spec:
+  nodeSelector:
+    zone: secure
+  containers:
+  - name: web1
+    image: httpd

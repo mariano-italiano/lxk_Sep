@@ -3,8 +3,10 @@ kind: Pod
 metadata:
   name: web-multi
 spec:
+  restartPolicy: Never
   containers:
   - name: web1
     image: httpd
-  - name: web2
-    image: nginx
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'sleep 1d']
