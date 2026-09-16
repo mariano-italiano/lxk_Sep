@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoMarket — Samochody na sprzedaż</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #e63946;
+    --primary-dark: #c92534;
+    --dark: #101828;
+    --text: #344054;
+    --muted: #667085;
+    --light: #f2f4f7;
+    --white: #fff;
+    --border: #eaecf0;
+    --green: #12b76a;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f8f9fb;
+    color: var(--text);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+/* HEADER */
+
+header {
+    background: var(--dark);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    max-width: 1200px;
+    margin: auto;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+nav a {
+    color: #d0d5dd;
+    font-size: 14px;
+    transition: .2s;
+}
+
+nav a:hover {
+    color: white;
+}
+
+.sell-btn {
+    background: var(--primary);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 0;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.sell-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* HERO */
+
+.hero {
+    background:
+        linear-gradient(90deg, rgba(16,24,40,.9), rgba(16,24,40,.55)),
+        url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1800&q=80")
+        center/cover;
+    min-height: 430px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    width: 1200px;
+    max-width: calc(100% - 40px);
+    margin: auto;
+    color: white;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    max-width: 700px;
+    line-height: 1.05;
+    margin-bottom: 18px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #eaecf0;
+    margin-bottom: 30px;
+}
+
+/* SEARCH */
+
+.search-box {
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 130px;
+    gap: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field label {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.field select,
+.field input {
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px;
+    outline: none;
+}
+
+.search-btn {
+    border: 0;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* CONTENT */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 60px 20px;
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-head h2 {
+    color: var(--dark);
+    font-size: 30px;
+}
+
+.section-head a {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* CARS */
+
+.cars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.car-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    transition: .25s;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(16,24,40,.1);
+}
+
+.car-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.car-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .3s;
+}
+
+.car-card:hover .car-image img {
+    transform: scale(1.04);
+}
+
+.badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--green);
+    color: white;
+    padding: 6px 9px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.favorite {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 0;
+    background: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.car-info {
+    padding: 18px;
+}
+
+.car-info h3 {
+    color: var(--dark);
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.car-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.spec {
+    background: var(--light);
+    padding: 6px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.price {
+    font-size: 23px;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+.details {
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* BRANDS */
+
+.brands {
+    margin-top: 60px;
+}
+
+.brand-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+}
+
+.brand {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 10px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--dark);
+}
+
+/* CTA */
+
+.cta {
+    background: var(--dark);
+    color: white;
+    border-radius: 18px;
+    padding: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 60px;
+    gap: 30px;
+}
+
+.cta h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.cta p {
+    color: #98a2b3;
+}
+
+.cta button {
+    background: var(--primary);
+    color: white;
+    border: 0;
+    padding: 15px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* FOOTER */
+
+footer {
+    background: #080c15;
+    color: #98a2b3;
+    padding: 40px 20px;
+}
+
+.footer-inner {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+footer h3 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+footer p,
+footer a {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 14px;
+}
+
+.copyright {
+    max-width: 1200px;
+    margin: 35px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid #1d2939;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+    .search-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .search-btn {
+        min-height: 45px;
+    }
+
+    .cars-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .brand-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .footer-inner {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 650px) {
+    nav {
+        display: none;
+    }
+
+    .hero {
+        min-height: 500px;
+    }
+
+    .search-box {
+        grid-template-columns: 1fr;
+    }
+
+    .cars-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px;
+    }
+
+    .footer-inner {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">Auto<span>Market</span></div>
+
+        <nav>
+            <a href="#">Samochody</a>
+            <a href="#">Marki</a>
+            <a href="#">Finansowanie</a>
+            <a href="#">Poradniki</a>
+        </nav>
+
+        <button class="sell-btn" onclick="alert('Formularz dodawania ogłoszenia')">
+            + Sprzedaj samochód
+        </button>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Znajdź samochód dla siebie.</h1>
+        <p>Setki sprawdzonych ofert samochodów nowych i używanych.</p>
+
+        <div class="search-box">
+            <div class="field">
+                <label>Marka</label>
+                <select id="brand">
+                    <option value="">Wszystkie marki</option>
+                    <option>BMW</option>
+                    <option>Audi</option>
+                    <option>Mercedes-Benz</option>
+                    <option>Toyota</option>
+                    <option>Volkswagen</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Model</label>
+                <input type="text" id="model" placeholder="np. Golf">
+            </div>
+
+            <div class="field">
+                <label>Cena do</label>
+                <input type="number" id="maxPrice" placeholder="np. 100000">
+            </div>
+
+            <div class="field">
+                <label>Rodzaj paliwa</label>
+                <select>
+                    <option>Dowolne</option>
+                    <option>Benzyna</option>
+                    <option>Diesel</option>
+                    <option>Hybryda</option>
+                    <option>Elektryczny</option>
+                </select>
+            </div>
+
+            <button class="search-btn" onclick="searchCars()">Szukaj</button>
+        </div>
+    </div>
+</section>
+
+<main class="container">
+
+    <div class="section-head">
+        <h2>Najnowsze ogłoszenia</h2>
+        <a href="#">Zobacz wszystkie →</a>
+    </div>
+
+    <div class="cars-grid" id="carsGrid">
+
+        <article class="car-card" data-brand="BMW" data-model="Seria 3" data-price="129900">
+            <div class="car-image">
+                <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80" alt="BMW Seria 3">
+                <span class="badge">Polecany</span>
+                <button class="favorite" onclick="favorite(this)">♡</button>
+            </div>
+            <div class="car-info">
+                <h3>BMW Seria 3</h3>
+                <div class="car-subtitle">320i M Sport • 2022</div>
+                <div class="specs">
+                    <span class="spec">45 200 km</span>
+                    <span class="spec">Benzyna</span>
+                    <span class="spec">Automat</span>
+                    <span class="spec">184 KM</span>
+                </div>
+                <div class="price-row">
+                    <div class="price">129 900 zł</div>
+                    <div class="details">Szczegóły →</div>
+                </div>
+            </div>
+        </article>
+
+        <article class="car-card" data-brand="Audi" data-model="A5" data-price="114900">
+            <div class="car-image">
+                <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80" alt="Audi A5">
+                <span class="badge">Nowe ogłoszenie</span>
+                <button class="favorite" onclick="favorite(this)">♡</button>
+            </div>
+            <div class="car-info">
+                <h3>Audi A5</h3>
+                <div class="car-subtitle">40 TFSI S line • 2021</div>
+                <div class="specs">
+                    <span class="spec">61 000 km</span>
+                    <span class="spec">Benzyna</span>
+                    <span class="spec">Automat</span>
+                    <span class="spec">204 KM</span>
+                </div>
+                <div class="price-row">
+                    <div class="price">114 900 zł</div>
+                    <div class="details">Szczegóły →</div>
+                </div>
+            </div>
+        </article>
+
+        <article class="car-card" data-brand="Toyota" data-model="Corolla" data-price="87900">
+            <div class="car-image">
+                <img src="https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=900&q=80" alt="Toyota Corolla">
+                <button class="favorite" onclick="favorite(this)">♡</button>
+            </div>
+            <div class="car-info">
+                <h3>Toyota Corolla</h3>
+                <div class="car-subtitle">2.0 Hybrid Executive • 2023</div>
+                <div class="specs">
+                    <span class="spec">22 400 km</span>
+                    <span class="spec">Hybryda</span>
+                    <span class="spec">Automat</span>
+                    <span class="spec">196 KM</span>
+                </div>
+                <div class="price-row">
+                    <div class="price">87 900 zł</div>
+                    <div class="details">Szczegóły →</div>
+                </div>
+            </div>
+        </article>
+
+    </div>
+
+    <section class="brands">
+        <div class="section-head">
+            <h2>Popularne marki</h2>
+        </div>
+
+        <div class="brand-grid">
+            <div class="brand">BMW</div>
+            <div class="brand">Audi</div>
+            <div class="brand">Mercedes</div>
+            <div class="brand">Toyota</div>
+            <div class="brand">Volkswagen</div>
+            <div class="brand">Volvo</div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div>
+            <h2>Masz samochód na sprzedaż?</h2>
+            <p>Dodaj ogłoszenie i dotrzyj do tysięcy zainteresowanych.</p>
+        </div>
+        <button onclick="alert('Otwieranie formularza sprzedaży')">
+            Dodaj ogłoszenie
+        </button>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <h3>AutoMarket</h3>
+            <p>Nowoczesny portal motoryzacyjny dla kupujących i sprzedających samochody.</p>
+        </div>
+
+        <div>
+            <h3>Dla kupujących</h3>
+            <a href="#">Wyszukiwarka</a>
+            <a href="#">Ulubione</a>
+            <a href="#">Poradniki</a>
+        </div>
+
+        <div>
+            <h3>Dla sprzedających</h3>
+            <a href="#">Dodaj ogłoszenie</a>
+            <a href="#">Cennik</a>
+            <a href="#">Promowanie</a>
+        </div>
+
+        <div>
+            <h3>Pomoc</h3>
+            <a href="#">Kontakt</a>
+            <a href="#">FAQ</a>
+            <a href="#">Regulamin</a>
+        </div>
+    </div>
+
+    <div class="copyright">
+        © 2026 AutoMarket. Wszystkie prawa zastrzeżone.
+    </div>
+</footer>
+
+<script>
+function favorite(button) {
+    if (button.textContent === "♡") {
+        button.textContent = "♥";
+        button.style.color = "#e63946";
+    } else {
+        button.textContent = "♡";
+        button.style.color = "";
+    }
+}
+
+function searchCars() {
+    const brand = document.getElementById("brand").value.toLowerCase();
+    const model = document.getElementById("model").value.toLowerCase();
+    const maxPrice = Number(document.getElementById("maxPrice").value) || Infinity;
+
+    const cars = document.querySelectorAll(".car-card");
+    let count = 0;
+
+    cars.forEach(car => {
+        const carBrand = car.dataset.brand.toLowerCase();
+        const carModel = car.dataset.model.toLowerCase();
+        const carPrice = Number(car.dataset.price);
+
+        const brandMatch = !brand || carBrand === brand;
+        const modelMatch = !model || carModel.includes(model);
+        const priceMatch = carPrice <= maxPrice;
+
+        if (brandMatch && modelMatch && priceMatch) {
+            car.style.display = "";
+            count++;
+        } else {
+            car.style.display = "none";
+        }
+    });
+
+    if (count === 0) {
+        alert("Nie znaleziono samochodów spełniających kryteria.");
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+# this is env file for AppX
+branchName=master
+version=v1.02
+# author for appX
+author=Linus Torwalds
+# command to clear cache
+clearCmd=zypper clean all

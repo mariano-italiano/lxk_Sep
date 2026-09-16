@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data: 
+  key1: value1
+  version: "1.0"
+  branchname: develop
+  config.json: |
+    {"attr1": "value1",
+    "attr2": "value2" }
+  sshd_config: |
+    Port 2222
+    PermitRootLogin false
